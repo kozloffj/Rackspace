@@ -13,9 +13,6 @@
                 "Standard_GRS",
                 "Standard_ZRS"
             ]
-        },
-        "PrimaryStorageLocation": {
-            "type": "string"
         }
     },
     "variables": {
@@ -24,9 +21,11 @@
         {
             "name": "[parameters('PrimaryStorageName')]",
             "type": "Microsoft.ClassicStorage/StorageAccounts",
-            "location": "[parameters('PrimaryStorageLocation')]",
+            "location": "[reference('GenerateResourceGroups').outputs.location.value]",
             "apiVersion":  "2015-06-01",
-            "dependsOn": [ ],
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', 'GenerateResourceGroups')]"
+            ],
             "properties": {
                 "accountType": "[parameters('PrimaryStorageType')]"
             }
