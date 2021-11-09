@@ -29,6 +29,7 @@
         "type": "Microsoft.Resources/deployments",
         "apiVersion": "2021-04-01",
         "name": "GenerateArchiveStorage",
+        "location": "[parameters('location')]",
         "dependsOn": [
           "[resourceId('Microsoft.Resources/deployments', 'GenerateResourceGroups')]"
         ],
