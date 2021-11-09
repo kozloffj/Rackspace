@@ -9,7 +9,7 @@
             "value": "Standard_ZRS"
         },
         "PrimaryStorageLocation": {
-            "value": "[reference('GenerateResourceGroups').outputs.location.value"
+            "value": "[reference('GenerateResourceGroups').outputs.location.value]"
         }
     }
 }
