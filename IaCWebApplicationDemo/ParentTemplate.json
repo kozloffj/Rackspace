@@ -18,6 +18,10 @@
           "templateLink": {
             "uri":"https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/GenerateResourceGroups/GenerateResourceGroups.json",
             "contentVersion":"1.0.0.0"
+          },
+          "parametersLink": {
+            "uri": "https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/GenerateResourceGroups/GenerateResourceGroups.paramaters.json",
+            "contentVersion": "1.0.0.0"
           }
         }
       }
