@@ -29,15 +29,17 @@
         "type": "Microsoft.Resources/deployments",
         "apiVersion": "2021-04-01",
         "name": "GenerateArchiveStorage",
-        "location": "[parameters('location')]",
+        "dependsOn": [
+          "[resourceId('Microsoft.Resources/deployments', 'GenerateResourceGroups')]"
+        ],
         "properties": {
           "mode": "Incremental",
           "templateLink": {
-            "uri":"https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/GenerateResourceGroups/GenerateResourceGroups.json",
+            "uri":"https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/GenerateArchiveStorage/GenerateArchiveStorage.json",
             "contentVersion":"1.0.0.0"
           },
           "parametersLink": {
-            "uri": "https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/GenerateResourceGroups/GenerateResourceGroups.paramaters.json",
+            "uri": "https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/GenerateArchiveStorage/GenerateArchiveStorage.parameters.json",
             "contentVersion": "1.0.0.0"
           }
         }
