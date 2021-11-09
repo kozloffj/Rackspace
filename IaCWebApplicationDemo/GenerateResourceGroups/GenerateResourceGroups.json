@@ -29,5 +29,18 @@
             "properties": {}
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "rgNameLogs": {
+            "type": "string",
+            "value": "[parameters('rgNameLogs')]"
+        },
+        "rgNameWeb": {
+            "type": "string",
+            "value": "[parameters('rgNameWeb')]"
+        },
+        "location": {
+            "type": "string",
+            "value": "[parameters('rgLocation')]"
+        }
+    }
 }

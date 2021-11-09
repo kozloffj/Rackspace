@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "PrimaryStorageName": {
+            "value": "storlogarchive"
+        },
+        "PrimaryStorageType": {
+            "value": "Standard_ZRS"
+        },
+        "PrimaryStorageLocation": {
+            "value": "[reference('GenerateResourceGroups').outputs.location.value]"
+        }
+    }
+}

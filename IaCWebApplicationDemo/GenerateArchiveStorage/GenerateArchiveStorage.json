@@ -1,0 +1,45 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "PrimaryStorageName": {
+            "type": "string"
+        },
+        "PrimaryStorageType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_ZRS"
+            ]
+        },
+        "PrimaryStorageLocation": {
+        "type": "string",
+        "defaultValue": "East US",
+        "allowedValues": [
+            "East US",
+            "West US",
+            "West Europe",
+            "East Asia",
+            "South East Asia"
+            ]
+        }
+    },
+    "variables": {
+    },
+    "resources": [
+        {
+            "name": "[parameters('PrimaryStorageName')]",
+            "type": "Microsoft.ClassicStorage/StorageAccounts",
+            "location": "[parameters('PrimaryStorageLocation')]",
+            "apiVersion":  "2015-06-01",
+            "dependsOn": [ ],
+            "properties": {
+                "accountType": "[parameters('PrimaryStorageType')]"
+            }
+        }
+    ],
+    "outputs": {
+    }
+}
