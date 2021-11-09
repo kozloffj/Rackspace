@@ -9,7 +9,7 @@
             "value": "Standard_ZRS"
         },
         "StorageLocation": {
-            "value": "[reference('GenerateResourceGroups').outputs.IaClocation.value]"
+            "value": "East US 2"
         }
     }
 }
