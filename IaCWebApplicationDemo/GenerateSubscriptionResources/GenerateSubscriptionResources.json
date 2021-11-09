@@ -32,15 +32,15 @@
     "outputs": {
         "rgNameLogs": {
             "type": "string",
-            "value": "[parameters('rgNameLogs')]"
+            "value": "[reference(parameters('rgNameLogs'))]"
         },
         "rgNameWeb": {
             "type": "string",
-            "value": "[parameters('rgNameWeb')]"
+            "value": "[reference(parameters('rgNameWeb'))]"
         },
         "IaClocation": {
             "type": "string",
-            "value": "[parameters('rgLocation')]"
+            "value": "[reference(parameters('rgLocation'))]"
         }
     }
 }
