@@ -2,10 +2,10 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "PrimaryStorageName": {
+        "StorageName": {
             "type": "string"
         },
-        "PrimaryStorageType": {
+        "StorageType": {
             "type": "string",
             "defaultValue": "Standard_LRS",
             "allowedValues": [
@@ -14,7 +14,7 @@
                 "Standard_ZRS"
             ]
         },
-        "PrimaryStorageLocation": {
+        "StorageLocation": {
             "type": "string"
         }
     },
@@ -22,15 +22,13 @@
     },
     "resources": [
         {
-            "name": "[parameters('PrimaryStorageName')]",
+            "name": "[parameters('StorageName')]",
             "type": "Microsoft.ClassicStorage/StorageAccounts", 
             "apiVersion":  "2015-06-01",
-            "location":"[parameters('PrimaryStorageLocation')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', 'GenerateResourceGroups')]"
-            ],
+            "location":"[parameters('StorageLocation')]",
+            "dependsOn": [],
             "properties": {
-                "accountType": "[parameters('PrimaryStorageType')]"
+                "accountType": "[parameters('StorageType')]"
             }
         }
     ],

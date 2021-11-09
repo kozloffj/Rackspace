@@ -38,7 +38,7 @@
             "type": "string",
             "value": "[parameters('rgNameWeb')]"
         },
-        "location": {
+        "IaClocation": {
             "type": "string",
             "value": "[parameters('rgLocation')]"
         }
