@@ -15,15 +15,7 @@
             ]
         },
         "PrimaryStorageLocation": {
-        "type": "string",
-        "defaultValue": "East US",
-        "allowedValues": [
-            "East US",
-            "West US",
-            "West Europe",
-            "East Asia",
-            "South East Asia"
-            ]
+            "type": "string"
         }
     },
     "variables": {
