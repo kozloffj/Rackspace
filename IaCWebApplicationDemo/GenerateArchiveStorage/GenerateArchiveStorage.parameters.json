@@ -9,7 +9,7 @@
             "value": "Standard_ZRS"
         },
         "StorageLocation": {
-            "value": "EastUS"
+            "value": "CentralUS"
         }
     }
 }
