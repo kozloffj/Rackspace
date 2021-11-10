@@ -30,7 +30,7 @@
       "name": "GenerateArchiveStorage",
       "resourceGroup": "[parameters('rgName')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'GenerateSubscriptionResources')]"
+        "[resourceId('Microsoft.Resources/resourceGroups',parameters('rgName'))]"
       ],
       "properties": {
         "mode": "Incremental",
