@@ -43,6 +43,26 @@
           "contentVersion": "1.0.0.0"
         }
       }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-04-01",
+      "name": "DeployVMSSSample",
+      "resourceGroup": "[parameters('rgName')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/resourceGroups',parameters('rgName'))]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri":"https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/SampleVMSSWithWeb/azuredeploy.json",
+          "contentVersion":"1.0.0.0"
+        },
+        "parametersLink": {
+          "uri": "https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/SampleVMSSWithWeb/azuredeploy.parameters.json",
+          "contentVersion": "1.0.0.0"
+        }
+      }
     }
   ],
   "outputs": {}
