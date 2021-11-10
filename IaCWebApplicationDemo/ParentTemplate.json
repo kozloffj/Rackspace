@@ -70,12 +70,12 @@
       "name": "DeploySampleVMSSWeb",
       "resourceGroup": "[parameters('rgName')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'DeployNetworkResources')]"
+        "[resourceId('Microsoft.Resources/deployments','DeployNetworkResources')]"
       ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri":"https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/DeploySampleVMSSWeb/DeploySampleVMSSWeb.json",
+          "uri": "https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/DeploySampleVMSSWeb/DeploySampleVMSSWeb.json",
           "contentVersion":"1.0.0.0"
         },
         "parametersLink": {
