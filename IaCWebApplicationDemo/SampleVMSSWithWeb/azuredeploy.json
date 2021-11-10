@@ -108,16 +108,35 @@
             "metadata": {
                 "description": "Fault Domain count for each placement group."
             }
-        }
+        },
+        "virtualNetworkName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of Subnet for VMSS Sample Web"
+            }
+        },
+        "subnetNameVMSS": {
+            "type": "string",
+            "metadata": {
+                "description": "Subnet for VMSS"
+            }
+        },
+        "subnetNameBastion": {
+            "type": "string",
+            "metadata": {
+                "description": "Subnet for Bastion Host"
+            }
+        }   
     },
     "variables": {
         "namingInfix": "[toLower(substring(concat(parameters('vmssName'), uniqueString(resourceGroup().id)), 0, 9))]",
         "longNamingInfix": "[toLower(parameters('vmssName'))]",
         "addressPrefix": "10.0.0.0/16",
-        "subnetPrefix": "10.0.0.0/24",
-        "virtualNetworkName": "[concat(variables('namingInfix'), 'vnet')]",
+        "subnetPrefixVMSS": "10.0.10.0/24",
+        "subnetPrefixBastion": "10.0.5.0/24",
+        "nsgSubnetVMSS": "[concat('nsg',parameters('subnetNameVMSS'))]",
+        "nsgSubnetBastion": "[concat('nsg',parameters('subnetNameBastion'))]",
         "publicIPAddressName": "[concat(variables('namingInfix'), 'pip')]",
-        "subnetName": "[concat(variables('namingInfix'), 'subnet')]",
         "loadBalancerName": "[concat(variables('namingInfix'), 'lb')]",
         "publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]",
         "lbProbeID": "[resourceId('Microsoft.Network/loadBalancers/probes',variables('loadBalancerName'), 'tcpProbe')]",
@@ -225,7 +244,7 @@
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]"
             ],
             "properties": {
                 "overprovision": true,
@@ -258,7 +277,7 @@
                                             "name": "[variables('ipConfigName')]",
                                             "properties": {
                                                 "subnet": {
-                                                    "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]"
+                                                    "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetNameVMSS'))]"
                                                 },
                                                 "loadBalancerBackendAddressPools": [
                                                     {
@@ -320,7 +339,7 @@
         {
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2020-06-01",
-            "name": "[variables('virtualNetworkName')]",
+            "name": "[parameters('virtualNetworkName')]",
             "location": "[parameters('location')]",
             "properties": {
                 "addressSpace": {
@@ -330,12 +349,67 @@
                 },
                 "subnets": [
                     {
-                        "name": "[variables('subnetName')]",
+                        "name": "[parameters('subnetNameVMSS')]",
                         "properties": {
-                            "addressPrefix": "[variables('subnetPrefix')]"
+                            "addressPrefix": "[variables('subnetPrefixVMSS')]"
+                        }
+                    },
+                                        {
+                        "name": "[parameters('subnetNameBastion')]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnetPrefixBastion')]"
                         }
                     }
                 ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2020-11-01",
+            "name": "[variables('nsgSubnetVMSS')]",
+            "location": "eastus2",
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "WebPort",
+                        "properties": {
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "80",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 100,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "apiVersion": "2020-11-01",
+            "name": "[concat(variables('nsgSubnetVMSS'), '/WebPort')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgSubnetVMSS'))]"
+            ],
+            "properties": {
+                "protocol": "TCP",
+                "sourcePortRange": "*",
+                "destinationPortRange": "80",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 100,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
             }
         },
         {

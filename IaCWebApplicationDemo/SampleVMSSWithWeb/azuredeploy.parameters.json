@@ -10,6 +10,15 @@
     },
     "adminPassword": {
       "value": "Saigon2012!!"
+    },
+    "virtualNetworkName": {
+      "value": "vnetSampleVMSSWeb"
+    },
+    "subnetNameVMSS": {
+      "value": "subnetVMSS"
+    },
+    "subnetNameBastion": {
+      "value": "subnetBastion"
     }
   }
 }
