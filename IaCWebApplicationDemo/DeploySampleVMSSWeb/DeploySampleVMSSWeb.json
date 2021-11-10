@@ -2,6 +2,12 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "namingSuffix": {
+            "type": "string",
+            "metadata": {
+                "description": "Part of Naming Convention"
+            }
+        },
         "vmSku": {
             "type": "string",
             "defaultValue": "Standard_A1_v2",
@@ -21,14 +27,6 @@
             ],
             "metadata": {
                 "description": "The Windows version for the VM. This will pick a fully patched image of this given Windows version. Allowed values: 2008-R2-SP1, 2012-Datacenter, 2012-R2-Datacenter & 2016-Datacenter, 2019-Datacenter."
-            }
-        },
-        "vmssName": {
-            "type": "string",
-            "minLength": 3,
-            "maxLength": 61,
-            "metadata": {
-                "description": "String used as a base for naming resources. Must be 3-61 characters in length and globally unique across Azure. A hash is prepended to this string for some resources, and resource-specific information is appended."
             }
         },
         "instanceCount": {
@@ -120,35 +118,17 @@
             "metadata": {
                 "description": "Subnet for VMSS"
             }
-        },
-        "subnetNameBastion": {
-            "type": "string",
-            "metadata": {
-                "description": "Subnet for Bastion Host"
-            }
         }   
     },
     "variables": {
-        "namingInfix": "[toLower(substring(concat(parameters('vmssName'), uniqueString(resourceGroup().id)), 0, 9))]",
-        "longNamingInfix": "[toLower(parameters('vmssName'))]",
-        "addressPrefix": "10.0.0.0/16",
-        "subnetPrefixVMSS": "10.0.10.0/24",
-        "subnetPrefixBastion": "10.0.5.0/24",
-        "nsgSubnetVMSS": "[concat('nsg',parameters('subnetNameVMSS'))]",
-        "nsgSubnetBastion": "[concat('nsg',parameters('subnetNameBastion'))]",
-        "publicIPAddressName": "[concat(variables('namingInfix'), 'pip')]",
-        "loadBalancerName": "[concat(variables('namingInfix'), 'lb')]",
-        "publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]",
-        "lbProbeID": "[resourceId('Microsoft.Network/loadBalancers/probes',variables('loadBalancerName'), 'tcpProbe')]",
-        "natPoolName": "[concat(variables('namingInfix'), 'natpool')]",
-        "bePoolName": "[concat(variables('namingInfix'), 'bepool')]",
+        "namingInfix": "[toLower(substring(concat(parameters('namingSuffix'), uniqueString(resourceGroup().id)), 0, 9))]",
+        "lbpublicIPAddressName": "[concat('pip', variables('namingInfix'))]",
+        "loadBalancerName": "[concat('plb',variables('namingInfix'))]",
+        "natPoolName": "[concat('natpool', variables('namingInfix'))]",
+        "bePoolName": "[concat('bepool', variables('namingInfix'))]",
         "lbPoolID": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools',variables('loadBalancerName'),variables('bePoolName'))]",
-        "natStartPort": 50000,
-        "natEndPort": 50119,
-        "natBackendPort": 3389,
         "nicName": "[concat(variables('namingInfix'), 'nic')]",
         "ipConfigName": "[concat(variables('namingInfix'), 'ipconfig')]",
-        "frontEndIPConfigID": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations',variables('loadBalancerName'),'loadBalancerFrontEnd')]",
         "osType": {
             "publisher": "MicrosoftWindowsServer",
             "offer": "WindowsServer",
@@ -160,78 +140,6 @@
         "powershelldscZipFullPath": "[uri(parameters('_artifactsLocation'), concat(parameters('powershelldscZip'), parameters('_artifactsLocationSasToken')))]"
     },
     "resources": [
-        {
-            "type": "Microsoft.Network/loadBalancers",
-            "apiVersion": "2020-06-01",
-            "name": "[variables('loadBalancerName')]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]"
-            ],
-            "properties": {
-                "frontendIPConfigurations": [
-                    {
-                        "name": "LoadBalancerFrontEnd",
-                        "properties": {
-                            "publicIPAddress": {
-                                "id": "[variables('publicIPAddressID')]"
-                            }
-                        }
-                    }
-                ],
-                "backendAddressPools": [
-                    {
-                        "name": "[variables('bePoolName')]"
-                    }
-                ],
-                "inboundNatPools": [
-                    {
-                        "name": "[variables('natPoolName')]",
-                        "properties": {
-                            "frontendIPConfiguration": {
-                                "id": "[variables('frontEndIPConfigID')]"
-                            },
-                            "protocol": "Tcp",
-                            "frontendPortRangeStart": "[variables('natStartPort')]",
-                            "frontendPortRangeEnd": "[variables('natEndPort')]",
-                            "backendPort": "[variables('natBackendPort')]"
-                        }
-                    }
-                ],
-                "loadBalancingRules": [
-                    {
-                        "name": "LBRule",
-                        "properties": {
-                            "frontendIPConfiguration": {
-                                "id": "[variables('frontEndIPConfigID')]"
-                            },
-                            "backendAddressPool": {
-                                "id": "[variables('lbPoolID')]"
-                            },
-                            "protocol": "Tcp",
-                            "frontendPort": 80,
-                            "backendPort": 80,
-                            "enableFloatingIP": false,
-                            "idleTimeoutInMinutes": 5,
-                            "probe": {
-                                "id": "[variables('lbProbeID')]"
-                            }
-                        }
-                    }
-                ],
-                "probes": [
-                    {
-                        "name": "tcpProbe",
-                        "properties": {
-                            "protocol": "Tcp",
-                            "port": 80,
-                            "intervalInSeconds": 5,
-                            "numberOfProbes": 2
-                        }
-                    }
-                ]
-            }
-        },
         {
             "type": "Microsoft.Compute/virtualMachineScaleSets",
             "apiVersion": "2020-06-01",
@@ -325,94 +233,6 @@
             }
         },
         {
-            "type": "Microsoft.Network/publicIPAddresses",
-            "apiVersion": "2020-06-01",
-            "name": "[variables('publicIPAddressName')]",
-            "location": "[parameters('location')]",
-            "properties": {
-                "publicIPAllocationMethod": "Static",
-                "dnsSettings": {
-                    "domainNameLabel": "[variables('longNamingInfix')]"
-                }
-            }
-        },
-        {
-            "type": "Microsoft.Network/virtualNetworks",
-            "apiVersion": "2020-06-01",
-            "name": "[parameters('virtualNetworkName')]",
-            "location": "[parameters('location')]",
-            "properties": {
-                "addressSpace": {
-                    "addressPrefixes": [
-                        "[variables('addressPrefix')]"
-                    ]
-                },
-                "subnets": [
-                    {
-                        "name": "[parameters('subnetNameVMSS')]",
-                        "properties": {
-                            "addressPrefix": "[variables('subnetPrefixVMSS')]"
-                        }
-                    },
-                                        {
-                        "name": "[parameters('subnetNameBastion')]",
-                        "properties": {
-                            "addressPrefix": "[variables('subnetPrefixBastion')]"
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            "type": "Microsoft.Network/networkSecurityGroups",
-            "apiVersion": "2020-11-01",
-            "name": "[variables('nsgSubnetVMSS')]",
-            "location": "eastus2",
-            "properties": {
-                "securityRules": [
-                    {
-                        "name": "WebPort",
-                        "properties": {
-                            "protocol": "TCP",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "80",
-                            "sourceAddressPrefix": "*",
-                            "destinationAddressPrefix": "*",
-                            "access": "Allow",
-                            "priority": 100,
-                            "direction": "Inbound",
-                            "sourcePortRanges": [],
-                            "destinationPortRanges": [],
-                            "sourceAddressPrefixes": [],
-                            "destinationAddressPrefixes": []
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
-            "apiVersion": "2020-11-01",
-            "name": "[concat(variables('nsgSubnetVMSS'), '/WebPort')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgSubnetVMSS'))]"
-            ],
-            "properties": {
-                "protocol": "TCP",
-                "sourcePortRange": "*",
-                "destinationPortRange": "80",
-                "sourceAddressPrefix": "*",
-                "destinationAddressPrefix": "*",
-                "access": "Allow",
-                "priority": 100,
-                "direction": "Inbound",
-                "sourcePortRanges": [],
-                "destinationPortRanges": [],
-                "sourceAddressPrefixes": [],
-                "destinationAddressPrefixes": []
-            }
-        },
-        {
             "type": "Microsoft.Insights/autoscaleSettings",
             "apiVersion": "2015-04-01",
             "name": "autoscalehost",
@@ -478,7 +298,7 @@
     "outputs": {
         "applicationUrl": {
             "type": "string",
-            "value": "[concat('http://', reference(variables('publicIPAddressName')).dnsSettings.fqdn, '/MyApp')]"
+            "value": "[concat('http://', reference(variables('lbpublicIPAddressName')).dnsSettings.fqdn, '/MyApp')]"
         }
     }
 }

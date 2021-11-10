@@ -1,0 +1,39 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "namingSuffix": {
+            "value": "SampleVMSSWeb"
+        },
+        "virtualNetworkName": {
+            "value": "vnetSampleVMSSWeb"
+        },
+        "subnetNameVMSS": {
+            "value": "subnetVMSS"
+        },
+        "subnetNameBastion": {
+            "value": "AzureBastionSubnet"
+        },
+        "BastionName": {
+            "value": "bastionHost"
+        },
+        "vmssName": {
+            "value": "GEN-UNIQUE-5"
+        },
+        "adminUsername": {
+            "value": "GEN-UNIQUE"
+        },
+        "adminPassword": {
+            "value": "Saigon2012!!"
+        },
+        "StorageName": {
+            "value": "storlogarchive"
+        },
+        "StorageType": {
+            "value": "Standard_ZRS"
+        },
+        "StorageLocation": {
+            "value": "CentralUS"
+        }
+    }
+}

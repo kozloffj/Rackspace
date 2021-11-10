@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "namingSuffix": {
+            "value": "[reference('GlobalParameters').outputs.namingsuffix.value]"
+        },
+        "virtualNetworkName": {
+            "value": "[reference('GlobalParameters').outputs.virtualNetworkName.value]"
+        },
+        "subnetNameVMSS": {
+            "value": "[reference('GlobalParameters').outputs.subnetNameVMSS.value]"
+        },
+        "subnetNameBastion": {
+            "value": "[reference('GlobalParameters').outputs.subnetNameBastion.value]"
+        },
+        "BastionName": {
+            "value": "[reference('GlobalParameters').outputs.BastionName.value]"
+        }
+    }
+}
