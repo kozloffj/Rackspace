@@ -70,7 +70,7 @@
       "name": "DeploySampleVMSSWeb",
       "resourceGroup": "[parameters('rgName')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'DeployNetworkResources')]"
+        "DeployNetworkResources"
       ],
       "properties": {
         "mode": "Incremental",
