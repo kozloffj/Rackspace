@@ -112,7 +112,7 @@
                 "description": "Subnet for VMSS"
             }
         },
-        
+
         "StorageName": {
             "type": "string"
         },
@@ -128,7 +128,7 @@
         "StorageLocation": {
             "type": "string"
         },
-                "subnetNameBastion": {
+        "subnetNameBastion": {
             "type": "string",
             "metadata": {
                 "description": "Subnet for Bastion Host"
@@ -175,7 +175,8 @@
         "mmaExtensionName": "[if(equals(toLower(parameters('osType')), 'windows'), 'MMAExtension', 'OMSExtension')]",
         "mmaExtensionType": "[if(equals(toLower(parameters('osType')), 'windows'), 'MicrosoftMonitoringAgent', 'OmsAgentForLinux')]",
         "mmaExtensionVersion": "[if(equals(toLower(parameters('osType')), 'windows'), '1.0', '1.4')]",
-        "workspaceResourceId": "[concat(subscription().id,'/resourceGroups/',resourceGroup().name,'/providers/Microsoft.OperationalInsights/workspaces/',variables('WSName'))]"
+        "workspaceResourceId": "[concat(subscription().id,'/resourceGroups/',resourceGroup().name,'/providers/Microsoft.OperationalInsights/workspaces/',variables('WSName'))]",
+        "VMSSResourceID": "[concat(subscription().id,'/resourceGroups/',resourceGroup().name,'/providers/Microsoft.Compute/virtualMachines/',variables('namingInfix'))]"
     },
     "resources": [
         {
@@ -283,7 +284,7 @@
                                     }
                                 }
                             },
-                                                        {
+                            {
                                 "type": "extensions",
                                 "name": "[variables('mmaExtensionName')]",
                                 "location": "[parameters('location')]",
@@ -294,6 +295,7 @@
                                     "autoUpgradeMinorVersion": true,
                                     "settings": {
                                         "workspaceId": "[reference(variables('workspaceResourceId'), '2015-03-20').customerId]",
+                                        "azureResourceId": "[variables('VMSSResourceID')]",
                                         "stopOnMultipleConnections": "true"
                                     },
                                     "protectedSettings": {
@@ -303,8 +305,12 @@
                             },
                             {
                                 "type": "extensions",
+                                "apiVersion": "2018-10-01",
                                 "name": "[variables('daExtensionName')]",
                                 "location": "[parameters('location')]",
+                                "dependsOn": [
+                                    "[concat('Microsoft.Compute/virtualMachineScaleSets/', variables('namingInfix'))]"
+                                ],
                                 "properties": {
                                     "publisher": "Microsoft.Azure.Monitoring.DependencyAgent",
                                     "type": "[variables('daExtensionType')]",
