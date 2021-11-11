@@ -160,8 +160,8 @@
                                 "id": "[variables('lbPoolID')]"
                             },
                             "protocol": "Tcp",
-                            "frontendPort": 80,
-                            "backendPort": 80,
+                            "frontendPort": 81,
+                            "backendPort": 81,
                             "enableFloatingIP": false,
                             "disableOutboundSnat": true,
                             "loadDistribution": "Default",
