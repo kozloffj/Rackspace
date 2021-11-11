@@ -100,10 +100,6 @@
                 "description": "Fault Domain count for each placement group."
             }
         },
-        "prioritizeUnhealthyInstances": {
-            "type": "bool",
-            "defaultValue": true
-        },
         "virtualNetworkName": {
             "type": "string",
             "metadata": {
@@ -208,7 +204,6 @@
                         "maxUnhealthyInstancePercent": 20,
                         "maxUnhealthyUpgradedInstancePercent": 20,
                         "pauseTimeBetweenBatches": "PT2S",
-                        "prioritizeUnhealthyInstances": "[parameters('prioritizeUnhealthyInstances')]"
                     }
                 },
                 "automaticRepairsPolicy": {
