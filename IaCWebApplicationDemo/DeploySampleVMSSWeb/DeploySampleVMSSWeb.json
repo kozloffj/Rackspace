@@ -94,8 +94,8 @@
             }
         },
         "platformFaultDomainCount": {
-            "type": "int",
-            "defaultValue": 1,
+            "type": "string",
+            "defaultValue": "1",
             "metadata": {
                 "description": "Fault Domain count for each placement group."
             }
