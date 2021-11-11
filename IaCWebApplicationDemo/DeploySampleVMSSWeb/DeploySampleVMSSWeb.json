@@ -286,6 +286,7 @@
                             },
                             {
                                 "type": "extensions",
+                                "apiVersion": "2018-10-01",
                                 "name": "[variables('mmaExtensionName')]",
                                 "location": "[parameters('location')]",
                                 "dependsOn": [
