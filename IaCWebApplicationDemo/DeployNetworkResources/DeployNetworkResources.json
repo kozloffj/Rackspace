@@ -70,7 +70,7 @@
     },
     "variables": {
         "namingInfix": "[toLower(substring(concat(parameters('namingSuffix'), uniqueString(resourceGroup().id)), 0, 9))]",
-        "longNamingInfix": "[toLower(parameters('namingSuffix'))]",
+        "longNamingInfix": "[toLower(concat(parameters('namingSuffix'),'2021'))]",
         "addressPrefix": "10.0.0.0/16",
         "subnetPrefixVMSS": "10.0.10.0/24",
         "subnetPrefixBastion": "10.0.5.0/24",
@@ -179,11 +179,13 @@
             "apiVersion": "2020-06-01",
             "name": "[variables('bshpublicIPAddressName')]",
             "location": "[parameters('location')]",
+            "sku": {
+                "name": "Standard"
+            },
             "properties": {
                 "publicIPAllocationMethod": "Static",
-                "dnsSettings": {
-                    "domainNameLabel": "[variables('longNamingInfix')]"
-                }
+                "idleTimeoutInMinutes": 4,
+                "publicIPAddressVersion": "IPv4"
             }
         },
         {
