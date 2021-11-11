@@ -151,15 +151,30 @@
                 ],
                 "probes": [
                     {
-                        "name": "tcpProbe",
+                        "name": "httpProbe",
                         "properties": {
-                            "protocol": "Tcp",
+                            "protocol": "Http",
                             "port": 80,
+                            "requestPath": "/myapp",
                             "intervalInSeconds": 5,
                             "numberOfProbes": 2
                         }
+                    },
+                    {
+                        "name": "healthProbe",
+                        "properties": {
+                            "protocol": "Http",
+                            "port": 80,
+                            "requestPath": "/myapp",
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 5
+                        }
                     }
                 ]
+            },
+            "sku": {
+                "name": "Standard",
+                "tier": "Regional"
             }
         },
         {
@@ -169,10 +184,21 @@
             "location": "[parameters('location')]",
             "properties": {
                 "publicIPAllocationMethod": "Static",
+                "idleTimeoutInMinutes": 4,
+                "publicIPAddressVersion": "IPv4",
                 "dnsSettings": {
                     "domainNameLabel": "[variables('longNamingInfix')]"
                 }
-            }
+            },
+            "sku": {
+                "name": "Standard",
+                "tier": "Regional"
+            },
+            "zones": [
+                "1",
+                "2",
+                "3"
+            ]
         },
         {
             "type": "Microsoft.Network/publicIPAddresses",
