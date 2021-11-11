@@ -151,6 +151,7 @@
                 "capacity": "[parameters('instanceCount')]"
             },
             "dependsOn": [
+                "[resourceID('Microsoft.Resources/deployments', 'DeployNetworkResources')]",
                 "[resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName'))]",
                 "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]"
             ],
