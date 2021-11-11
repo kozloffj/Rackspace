@@ -87,7 +87,9 @@
         "natStartPort": 50000,
         "natEndPort": 50119,
         "natBackendPort": 3389,
-        "frontEndIPConfigID": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations',variables('loadBalancerName'),'loadBalancerFrontEnd')]"
+        "frontEndIPConfigID": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations',variables('loadBalancerName'),'loadBalancerFrontEnd')]",
+        "healthprobeID": "[concat(subscription().id,'/resourceGroups/',resourceGroup().name,'/providers/Microsoft.Network/loadBalancers/',variables('loadBalancerName'),'/probes/healthProbe')]"
+
     },
     "resources": [
         {
@@ -147,7 +149,29 @@
                                 "id": "[variables('lbProbeID')]"
                             }
                         }
+                    },
+                    {
+                        "name": "LBRuleVMSSHealth",
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[variables('frontEndIPConfigID')]"
+                            },
+                            "backendAddressPool": {
+                                "id": "[variables('lbPoolID')]"
+                            },
+                            "protocol": "Tcp",
+                            "frontendPort": 80,
+                            "backendPort": 80,
+                            "enableFloatingIP": false,
+                            "disableOutboundSnat": true,
+                            "loadDistribution": "Default",
+                            "idleTimeoutInMinutes": 5,
+                            "probe": {
+                                "id": "[variables('healthprobeID')]"
+                            }
+                        }
                     }
+
                 ],
                 "probes": [
                     {
@@ -232,7 +256,7 @@
                             "addressPrefix": "[variables('subnetPrefixVMSS')]"
                         }
                     },
-                                        {
+                    {
                         "name": "[parameters('subnetNameBastion')]",
                         "properties": {
                             "addressPrefix": "[variables('subnetPrefixBastion')]"
@@ -290,7 +314,7 @@
                 "destinationAddressPrefixes": []
             }
         },
-                {
+        {
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2020-11-01",
             "name": "[variables('nsgSubnetBastion')]",
