@@ -10,7 +10,7 @@
         },
         "vmSku": {
             "type": "string",
-            "defaultValue": "Standard_A1_v2",
+            "defaultValue": "Standard_A2_v2",
             "metadata": {
                 "description": "Size of VMs in the VM Scale Set."
             }
@@ -146,10 +146,15 @@
             "metadata": {
                 "description": "Name for Bastion Host"
             }
+        },
+        "osType": {
+            "type": "String",
+            "defaultValue": "Windows"
         }
     },
     "variables": {
         "namingInfix": "[toLower(substring(concat(parameters('namingSuffix'), uniqueString(resourceGroup().id)), 0, 9))]",
+        "WSName": "[toLower(concat('lws',parameters('namingSuffix')))]",
         "lbpublicIPAddressName": "[concat('pip', variables('namingInfix'))]",
         "loadBalancerName": "[concat('plb',variables('namingInfix'))]",
         "natPoolName": "[concat('natpool', variables('namingInfix'))]",
@@ -165,7 +170,14 @@
         },
         "imageReference": "[variables('osType')]",
         "webDeployPackageFullPath": "[uri(parameters('_artifactsLocation'), concat(parameters('webDeployPackage'), parameters('_artifactsLocationSasToken')))]",
-        "powershelldscZipFullPath": "[uri(parameters('_artifactsLocation'), concat(parameters('powershelldscZip'), parameters('_artifactsLocationSasToken')))]"
+        "powershelldscZipFullPath": "[uri(parameters('_artifactsLocation'), concat(parameters('powershelldscZip'), parameters('_artifactsLocationSasToken')))]",
+        "daExtensionName": "[if(equals(toLower(parameters('osType')), 'windows'), 'DependencyAgentWindows', 'DependencyAgentLinux')]",
+        "daExtensionType": "[if(equals(toLower(parameters('osType')), 'windows'), 'DependencyAgentWindows', 'DependencyAgentLinux')]",
+        "daExtensionVersion": "9.5",
+        "mmaExtensionName": "[if(equals(toLower(parameters('osType')), 'windows'), 'MMAExtension', 'OMSExtension')]",
+        "mmaExtensionType": "[if(equals(toLower(parameters('osType')), 'windows'), 'MicrosoftMonitoringAgent', 'OmsAgentForLinux')]",
+        "mmaExtensionVersion": "[if(equals(toLower(parameters('osType')), 'windows'), '1.0', '1.4')]",
+        "workspaceResourceId": "[concat('/subscriptions/',subscription().id,'/resourceGroups/',resourceGroup().name,'/providers/Microsoft.OperationalInsights/workspaces/',variables('WSName'))]"
     },
     "resources": [
         {
@@ -250,6 +262,35 @@
                                             "WebDeployPackagePath": "[variables('webDeployPackageFullPath')]"
                                         }
                                     }
+                                }
+                            },
+                                                        {
+                                "type": "extensions",
+                                "name": "[variables('mmaExtensionName')]",
+                                "location": "[parameters('location')]",
+                                "properties": {
+                                    "publisher": "Microsoft.EnterpriseCloud.Monitoring",
+                                    "type": "[variables('mmaExtensionType')]",
+                                    "typeHandlerVersion": "[variables('mmaExtensionVersion')]",
+                                    "autoUpgradeMinorVersion": true,
+                                    "settings": {
+                                        "workspaceId": "[reference(variables('workspaceResourceId'), '2015-03-20').customerId]",
+                                        "stopOnMultipleConnections": "true"
+                                    },
+                                    "protectedSettings": {
+                                        "workspaceKey": "[listKeys(variables('workspaceResourceId'), '2015-03-20').primarySharedKey]"
+                                    }
+                                }
+                            },
+                            {
+                                "type": "extensions",
+                                "name": "[variables('daExtensionName')]",
+                                "location": "[parameters('location')]",
+                                "properties": {
+                                    "publisher": "Microsoft.Azure.Monitoring.DependencyAgent",
+                                    "type": "[variables('daExtensionType')]",
+                                    "typeHandlerVersion": "[variables('daExtensionVersion')]",
+                                    "autoUpgradeMinorVersion": true
                                 }
                             }
                         ]
