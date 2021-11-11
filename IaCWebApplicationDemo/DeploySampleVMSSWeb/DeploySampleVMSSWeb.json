@@ -204,7 +204,7 @@
                         "maxUnhealthyInstancePercent": 20,
                         "maxUnhealthyUpgradedInstancePercent": 20,
                         "pauseTimeBetweenBatches": "PT2S",
-                        "prioritizeUnhealthyInstances": true
+                        "prioritizeUnhealthyInstances": "true"
                     }
                 },
                 "automaticRepairsPolicy": {
@@ -288,6 +288,9 @@
                                 "type": "extensions",
                                 "name": "[variables('mmaExtensionName')]",
                                 "location": "[parameters('location')]",
+                                "dependsOn": [
+                                    "[concat('Microsoft.Compute/virtualMachineScaleSets/', variables('namingInfix'))]"
+                                ],
                                 "properties": {
                                     "publisher": "Microsoft.EnterpriseCloud.Monitoring",
                                     "type": "[variables('mmaExtensionType')]",
