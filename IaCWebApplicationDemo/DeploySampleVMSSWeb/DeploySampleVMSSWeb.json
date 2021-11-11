@@ -118,7 +118,35 @@
             "metadata": {
                 "description": "Subnet for VMSS"
             }
-        }   
+        },
+        
+        "StorageName": {
+            "type": "string"
+        },
+        "StorageType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_ZRS"
+            ]
+        },
+        "StorageLocation": {
+            "type": "string"
+        },
+                "subnetNameBastion": {
+            "type": "string",
+            "metadata": {
+                "description": "Subnet for Bastion Host"
+            }
+        },
+        "BastionName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name for Bastion Host"
+            }
+        }
     },
     "variables": {
         "namingInfix": "[toLower(substring(concat(parameters('namingSuffix'), uniqueString(resourceGroup().id)), 0, 9))]",

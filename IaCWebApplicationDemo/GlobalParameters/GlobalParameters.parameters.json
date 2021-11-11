@@ -17,9 +17,6 @@
         "BastionName": {
             "value": "bastionHost"
         },
-        "vmssName": {
-            "value": "GEN-UNIQUE-5"
-        },
         "adminUsername": {
             "value": "GEN-UNIQUE"
         },
