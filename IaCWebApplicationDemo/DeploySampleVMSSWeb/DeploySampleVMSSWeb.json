@@ -178,9 +178,7 @@
                 "tier": "Standard",
                 "capacity": "[parameters('instanceCount')]"
             },
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]"
-            ],
+            "dependsOn": [],
             "properties": {
                 "overprovision": true,
                 "upgradePolicy": {
