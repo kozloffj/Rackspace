@@ -93,13 +93,6 @@
                 "description": "Location for all resources."
             }
         },
-        "platformFaultDomainCount": {
-            "type": "string",
-            "defaultValue": "1",
-            "metadata": {
-                "description": "Fault Domain count for each placement group."
-            }
-        },
         "virtualNetworkName": {
             "type": "string",
             "metadata": {
@@ -112,7 +105,13 @@
                 "description": "Subnet for VMSS"
             }
         },
-
+        "platformFaultDomainCount": {
+            "type": "int",
+            "defaultValue": 1,
+            "metadata": {
+                "description": "Fault Domain count for each placement group."
+            }
+        },
         "StorageName": {
             "type": "string"
         },
@@ -181,7 +180,7 @@
     "resources": [
         {
             "type": "Microsoft.Compute/virtualMachineScaleSets",
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2020-12-01",
             "name": "[variables('namingInfix')]",
             "location": "[parameters('location')]",
             "sku": {
@@ -204,6 +203,7 @@
                         "maxUnhealthyInstancePercent": 20,
                         "maxUnhealthyUpgradedInstancePercent": 20,
                         "pauseTimeBetweenBatches": "PT2S",
+                        "prioritizeUnhealthyInstances": true
                     }
                 },
                 "automaticRepairsPolicy": {
