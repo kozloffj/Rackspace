@@ -69,7 +69,9 @@
       "apiVersion": "2021-04-01",
       "name": "DeploySampleVMSSWeb",
       "resourceGroup": "[parameters('rgName')]",
-      "dependsOn": [],
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'DeployNetworkResources')]"
+      ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
