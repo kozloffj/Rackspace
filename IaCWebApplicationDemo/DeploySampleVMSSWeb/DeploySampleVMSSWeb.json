@@ -100,6 +100,10 @@
                 "description": "Fault Domain count for each placement group."
             }
         },
+        "prioritizeUnhealthyInstances": {
+            "type": "bool",
+            "defaultValue": true
+        },
         "virtualNetworkName": {
             "type": "string",
             "metadata": {
@@ -204,7 +208,7 @@
                         "maxUnhealthyInstancePercent": 20,
                         "maxUnhealthyUpgradedInstancePercent": 20,
                         "pauseTimeBetweenBatches": "PT2S",
-                        "prioritizeUnhealthyInstances": "true"
+                        "prioritizeUnhealthyInstances": "[parameters('prioritizeUnhealthyInstances')]"
                     }
                 },
                 "automaticRepairsPolicy": {
@@ -286,12 +290,8 @@
                             },
                             {
                                 "type": "extensions",
-                                "apiVersion": "2018-10-01",
                                 "name": "[variables('mmaExtensionName')]",
                                 "location": "[parameters('location')]",
-                                "dependsOn": [
-                                    "[concat('Microsoft.Compute/virtualMachineScaleSets/', variables('namingInfix'))]"
-                                ],
                                 "properties": {
                                     "publisher": "Microsoft.EnterpriseCloud.Monitoring",
                                     "type": "[variables('mmaExtensionType')]",
@@ -309,12 +309,8 @@
                             },
                             {
                                 "type": "extensions",
-                                "apiVersion": "2018-10-01",
                                 "name": "[variables('daExtensionName')]",
                                 "location": "[parameters('location')]",
-                                "dependsOn": [
-                                    "[concat('Microsoft.Compute/virtualMachineScaleSets/', variables('namingInfix'))]"
-                                ],
                                 "properties": {
                                     "publisher": "Microsoft.Azure.Monitoring.DependencyAgent",
                                     "type": "[variables('daExtensionType')]",
