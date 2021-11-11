@@ -80,7 +80,7 @@
         "lbpublicIPAddressName": "[concat('pip', variables('namingInfix'))]",
         "loadBalancerName": "[concat('plb',variables('namingInfix'))]",
         "publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('lbpublicIPAddressName'))]",
-        "lbProbeID": "[resourceId('Microsoft.Network/loadBalancers/probes',variables('loadBalancerName'), 'tcpProbe')]",
+        "lbProbeID": "[resourceId('Microsoft.Network/loadBalancers/probes',variables('loadBalancerName'), 'httpProbe')]",
         "natPoolName": "[concat('natpool', variables('namingInfix'))]",
         "bePoolName": "[concat('bepool', variables('namingInfix'))]",
         "lbPoolID": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools',variables('loadBalancerName'),variables('bePoolName'))]",
