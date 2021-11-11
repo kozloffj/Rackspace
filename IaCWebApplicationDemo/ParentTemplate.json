@@ -50,7 +50,7 @@
       "name": "DeployNetworkResources",
       "resourceGroup": "[parameters('rgName')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'GenerateArchiveStorage')]"
+        "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]"
       ],
       "properties": {
         "mode": "Incremental",
