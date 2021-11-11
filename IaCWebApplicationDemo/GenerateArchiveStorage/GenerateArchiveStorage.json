@@ -16,7 +16,57 @@
         },
         "StorageLocation": {
             "type": "string"
-        }
+        },
+        "namingSuffix": {
+            "type": "string",
+            "metadata": {
+                "description": "Part of Naming Convention"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        },
+        "virtualNetworkName": {
+            "type": "string",
+            "metadata": {
+                "description": "Virtual Network for all VMSS Resources"
+            }
+        },
+        "subnetNameVMSS": {
+            "type": "string",
+            "metadata": {
+                "description": "Subnet for VMSS"
+            }
+        },
+        "subnetNameBastion": {
+            "type": "string",
+            "metadata": {
+                "description": "Subnet for Bastion Host"
+            }
+        },
+        "BastionName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name for Bastion Host"
+            }
+        },
+        "adminUsername": {
+            "type": "string",
+            "defaultValue": "vmssadmin",
+            "metadata": {
+                "description": "Admin username on all VMs."
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Admin password on all VMs."
+            }
+        },
     },
     "variables": {
     },
