@@ -24,6 +24,7 @@
 
 # Architecture
 
+![Application Architecture](https://github.com/kozloffj/Rackspace/blob/main/Architecture.png?raw=true)
 
 Characteristics of the solution architecture
 
@@ -82,6 +83,7 @@ To access the Virtual Machines, utilize the Bastion connection for each VMSS Ins
 
 To view the site, go to: http://samplevmssweb2021.eastus2.cloudapp.azure.com/MyApp. The expected output should be as shown below, where [samplevms00007] will change per which machine is serving the request (tip: hold Ctrl and hit F5 for increased chance to have a request sent to a different VM).
 
+![Sample of App Running](https://github.com/kozloffj/Rackspace/blob/main/SampleAppResult.png?raw=true)
 
 To force spin-up of additional Virtual Machines, an increase of CPU utilization on the VM is required. This is performed by connecting to one or more VMSS Instances using Bastion, then run the PowerShell code found in this article - https://www.wellarchitectedlabs.com/performance-efficiency/100_labs/100_monitoring_windows_ec2_cloudwatch/5_generating_load/
 
