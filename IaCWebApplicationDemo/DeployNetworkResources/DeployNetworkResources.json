@@ -403,7 +403,7 @@
                         }
                     },
                     {
-                        "name": "ElseDeny",
+                        "name": "ElseDenyInbound",
                         "properties": {
                             "protocol": "*",
                             "sourcePortRange": "*",
@@ -514,7 +514,7 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2020-11-01",
-            "name": "[concat(variables('nsgSubnetBastion'), '/WebPort')]",
+            "name": "[concat(variables('nsgSubnetBastion'), '/AllowAzureCloundOutbound')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgSubnetBastion'))]"
             ],
@@ -536,7 +536,7 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2020-11-01",
-            "name": "[concat(variables('nsgSubnetBastion'), '/WebPort')]",
+            "name": "[concat(variables('nsgSubnetBastion'), '/AllowAzureLoadBalancerInbound')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgSubnetBastion'))]"
             ],
@@ -558,7 +558,7 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2020-11-01",
-            "name": "[concat(variables('nsgSubnetBastion'), '/WebPort')]",
+            "name": "[concat(variables('nsgSubnetBastion'), '/AllowBastionCommunication')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgSubnetBastion'))]"
             ],
@@ -582,7 +582,7 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2020-11-01",
-            "name": "[concat(variables('nsgSubnetBastion'), '/WebPort')]",
+            "name": "[concat(variables('nsgSubnetBastion'), '/AllowBastionHostCommunication')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgSubnetBastion'))]"
             ],
@@ -606,7 +606,7 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2020-11-01",
-            "name": "[concat(variables('nsgSubnetBastion'), '/WebPort')]",
+            "name": "[concat(variables('nsgSubnetBastion'), '/AllowGatewayManagerInbound')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgSubnetBastion'))]"
             ],
@@ -628,7 +628,7 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2020-11-01",
-            "name": "[concat(variables('nsgSubnetBastion'), '/WebPort')]",
+            "name": "[concat(variables('nsgSubnetBastion'), '/AllowGetSessionInformation')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgSubnetBastion'))]"
             ],
@@ -650,7 +650,7 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2020-11-01",
-            "name": "[concat(variables('nsgSubnetBastion'), '/WebPort')]",
+            "name": "[concat(variables('nsgSubnetBastion'), '/AllowHTTPSInbound')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgSubnetBastion'))]"
             ],
@@ -672,7 +672,7 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2020-11-01",
-            "name": "[concat(variables('nsgSubnetBastion'), '/WebPort')]",
+            "name": "[concat(variables('nsgSubnetBastion'), '/AllowSSHRDPOutbound')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgSubnetBastion'))]"
             ],
@@ -696,7 +696,7 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2020-11-01",
-            "name": "[concat(variables('nsgSubnetBastion'), '/WebPort')]",
+            "name": "[concat(variables('nsgSubnetBastion'), '/ElseDenyInbound')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgSubnetBastion'))]"
             ],
@@ -718,7 +718,7 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2020-11-01",
-            "name": "[concat(variables('nsgSubnetBastion'), '/WebPort')]",
+            "name": "[concat(variables('nsgSubnetBastion'), '/ElseDenyOutbound')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgSubnetBastion'))]"
             ],
