@@ -18,7 +18,7 @@
   - Deploys a simple &quot;hello world&quot; page for the web server to serve up
   - May be written in the language of your choice (HTML, PHP, etc)
   - May be sourced from the location of your choice (Git, cookbook file/ template, etc)
-  - Must include the server&#39;s hostname in the &quot;hello world&quot; presented to the user
+  - Must include the server's hostname in the "hello world" presented to the user
 - All Azure resources must be created using Terraform or Azure Resource Manager
 - No resources may be created or managed by hand in the portal, the Azure CLI, or with Powershell
 
@@ -34,7 +34,7 @@ A single resource group was selected as the application is limited to a single t
 
 **Single Virtual Network and Two Subnets**
 
-A single VNet with two Subnets is deployed. The subnets are scoped to their specific objective: Bastion Host and VM Scale Set. Both Subnet&#39;s are associated with dedicated NSGs with hardened inbound and outbound security rules.
+A single VNet with two Subnets is deployed. The subnets are scoped to their specific objective: Bastion Host and VM Scale Set. Both Subnets are associated with dedicated NSGs with hardened inbound and outbound security rules.
 
 **Virtual Machine Scale Set**
 
@@ -104,7 +104,7 @@ New-AzDeployment -Name "Initial-Deploy-1" -Location "East US 2" `
 
 # Template Source
 
-In addition to Microsoft Documentation, source template code was provided by Jason Boeshart&#39;s GitHub solution as part of the Microsoft Azure Quick Start Templates.
+In addition to Microsoft Documentation, source template code was provided by Jason Boeshart's GitHub solution as part of the Microsoft Azure Quick Start Templates.
 
 - **Solution Name** : Create/Upgrade a VM scale set running IIS configured for autoscale
 - **URL** : https://github.com/Azure/azure-quickstart-templates/tree/master/demos/vmss-windows-webapp-dsc-autoscale
