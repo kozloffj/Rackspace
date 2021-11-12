@@ -259,7 +259,7 @@
                         "properties": {
                             "addressPrefix": "[variables('subnetPrefixVMSS')]",
                             "networkSecurityGroup": {
-                                "id": "[concat(subscription().id,'/resourceGroups/',resourceGroup().name,'/providers/Microsoft.Network/networkSecurityGroups',variables('nsgSubnetVMSS'))]"
+                                "id": "[concat(subscription().id,'/resourceGroups/',resourceGroup().name,'/providers/Microsoft.Network/networkSecurityGroups/',variables('nsgSubnetVMSS'))]"
                             }
                         }
 
@@ -269,7 +269,7 @@
                         "properties": {
                             "addressPrefix": "[variables('subnetPrefixBastion')]",
                             "networkSecurityGroup": {
-                                "id": "[concat(subscription().id,'/resourceGroups/',resourceGroup().name,'/providers/Microsoft.Network/networkSecurityGroups',variables('nsgSubnetBastion'))]"
+                                "id": "[concat(subscription().id,'/resourceGroups/',resourceGroup().name,'/providers/Microsoft.Network/networkSecurityGroups/',variables('nsgSubnetBastion'))]"
                             }
                         }
                     }
