@@ -15,7 +15,11 @@
       }
     }
   },
-  "variables": {},
+  "variables": {
+        "workspaceResourceId": "[concat(subscription().id,'/resourceGroups/',parameters('rgName'),'/providers/Microsoft.OperationalInsights/workspaces/lwssamplevmssweb')]",
+        "storageaccountId": "[concat(subscription().id,'/resourceGroups/',parameters('rgName'),'/providers/Microsoft.ClassicStorage/StorageAccounts/storlogarchive')]"
+
+  },
   "resources": [
     {
       "type": "Microsoft.Resources/resourceGroups",
@@ -23,6 +27,53 @@
       "name": "[parameters('rgName')]",
       "location": "[parameters('rgLocation')]",
       "properties": {}
+    },
+    {
+      "type": "Microsoft.Insights/diagnosticSettings",
+      "apiVersion": "2017-05-01-preview",
+      "name": "diagnosticSettings-ActivityLogs",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'DeployLogAnalyticsWS')]",
+        "[resourceId('Microsoft.Resources/deployments', 'GenerateArchiveStorage')]"
+      ],
+      "properties": {
+        "workspaceId": "[variables('workspaceResourceId')]",
+        "storageAccountId": "[variables('storageaccountId')]",
+        "logs": [
+          {
+            "category": "Administrative",
+            "enabled": true
+          },
+          {
+            "category": "Security",
+            "enabled": true
+          },
+          {
+            "category": "ServiceHealth",
+            "enabled": true
+          },
+          {
+            "category": "Alert",
+            "enabled": true
+          },
+          {
+            "category": "Recommendation",
+            "enabled": true
+          },
+          {
+            "category": "Policy",
+            "enabled": true
+          },
+          {
+            "category": "Autoscale",
+            "enabled": true
+          },
+          {
+            "category": "ResourceHealth",
+            "enabled": true
+          }
+        ]
+      }
     },
     {
       "type": "Microsoft.Resources/deployments",
@@ -35,8 +86,8 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri":"https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/GenerateArchiveStorage/GenerateArchiveStorage.json",
-          "contentVersion":"1.0.0.0"
+          "uri": "https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/GenerateArchiveStorage/GenerateArchiveStorage.json",
+          "contentVersion": "1.0.0.0"
         },
         "parametersLink": {
           "uri": "https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/GlobalParameters/GlobalParameters.parameters.json",
@@ -55,8 +106,8 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri":"https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/DeployLogAnalyticsWS/DeployLogAnalyticsWS.json",
-          "contentVersion":"1.0.0.0"
+          "uri": "https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/DeployLogAnalyticsWS/DeployLogAnalyticsWS.json",
+          "contentVersion": "1.0.0.0"
         },
         "parametersLink": {
           "uri": "https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/GlobalParameters/GlobalParameters.parameters.json",
@@ -75,8 +126,8 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri":"https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/DeployNetworkResources/DeployNetworkResources.json",
-          "contentVersion":"1.0.0.0"
+          "uri": "https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/DeployNetworkResources/DeployNetworkResources.json",
+          "contentVersion": "1.0.0.0"
         },
         "parametersLink": {
           "uri": "https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/GlobalParameters/GlobalParameters.parameters.json",
@@ -96,7 +147,7 @@
         "mode": "Incremental",
         "templateLink": {
           "uri": "https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/DeploySampleVMSSWeb/DeploySampleVMSSWeb.json",
-          "contentVersion":"1.0.0.0"
+          "contentVersion": "1.0.0.0"
         },
         "parametersLink": {
           "uri": "https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/GlobalParameters/GlobalParameters.parameters.json",
