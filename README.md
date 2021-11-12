@@ -95,7 +95,9 @@ NOTE: the template **ParentTemplate.json** is the root template, and all linked 
 
 To run the IaC on a different subscription and use the public storage, use the following PowerShell command:
 
+```
 New-AzDeployment -Name &quot;Initial-Deploy-1&quot; -Location &quot;East US 2&quot; -TemplateUri &quot;https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/ParentTemplate.json&quot; -TemplateParameterUri &quot;https://raw.githubusercontent.com/kozloffj/Rackspace/main/IaCWebApplicationDemo/ParentTemplate.paramaters.json&quot; -DeploymentDebugLogLevel All
+```
 
 # Template Source
 
